@@ -21,7 +21,7 @@ A solução organiza o processo em estados observáveis e oferece filtros para l
 5. A assinatura passa por uma conferência humana distinta.
 6. Indicadores e relatórios apoiam o acompanhamento da coordenação.
 
-As etapas de servidor foram descritas no histórico e nos trechos fornecidos. A interface foi recuperada; o pacote integral de produção ainda não foi exportado.
+Os 24 arquivos da versão 18 foram exportados do histórico do Apps Script. A cópia pública preserva a lógica original, com configurações institucionais externalizadas. Homologação integrada permanece pendente.
 
 ## Contribuição apresentada
 

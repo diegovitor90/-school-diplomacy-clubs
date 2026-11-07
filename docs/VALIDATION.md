@@ -1,18 +1,15 @@
-# Validação do pacote
+# Validação da importação
 
-Executada durante a preparação inicial do portfólio em 07/11/2026 (UTC).
+Verificação local em 07/11/2026: **9 testes aprovados**, geração da demonstração e verificações estáticas aprovadas.
 
-| Verificação | Resultado |
-| --- | --- |
-| Geração de `demo/index.html` | Passou |
-| Sintaxe dos scripts do HTML recuperado e da demonstração | Passou |
-| Ausência dos identificadores institucionais conhecidos nos dois HTMLs | Passou |
-| Totais fictícios consistentes e IDs únicos | Passou |
-| Operações administrativas e escritas bloqueadas pelo adaptador | Passou |
-| Isolamento dos objetos retornados pelo adaptador | Passou |
-| Inspeção visual e teste de navegação em navegador | Não executado: Chromium local bloqueado por restrição de socket do ambiente |
-| Integração com Google Workspace | Não executada: backend completo ainda não importado |
+- Os 20 arquivos GS (19 originais + configuração) compilam no mesmo contexto.
+- Conta ausente, não autorizada e lista vazia negam acesso; lista configurada é normalizada.
+- Dashboard conta assinatura válida, exclui inativos e não retorna nome do estudante.
+- Payload do piloto exclui gabarito; decisões inválidas são rejeitadas antes de gravação.
+- Três testes da demonstração verificam consistência, bloqueio de escrita e isolamento de dados.
+- HTMLs ativos e históricos passam na análise sintática de scripts inline.
+- Identificadores institucionais conhecidos não estão nos arquivos importados; manifesto mantém MYSELF.
 
-O resultado automatizado foi de **3 testes aprovados**, além da verificação estática. Não há evidência de execução do workflow no GitHub; ele só será executado após publicação e configuração do repositório.
+Os testes usam mocks, sem chamadas ao Google. Não comprovam permissões reais, identidade de sessão, processamento de PDFs, concorrência ou gravação em Sheets/Docs. A validação integrada e visual continua pendente. Consulte SETUP.md e RECOVERY.md.
 
-Antes de apresentar a demonstração, abrir o HTML em navegador desktop e celular, conferir o gráfico, filtros combinados e navegação. Antes de implantar, seguir os critérios de `RECOVERY.md`.
+O workflow do GitHub executa geração, verificações e testes a cada push/PR; seu resultado deve ser consultado na aba Actions do commit correspondente.

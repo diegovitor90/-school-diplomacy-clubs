@@ -8,7 +8,7 @@ O Portal SDC reúne acompanhamento de estudantes, situação documental e ferram
 
 [Explorar a demonstração](#experimentar) · [Estudo de caso](docs/CASE_STUDY.md) · [Arquitetura](docs/ARCHITECTURE.md) · [Estado do código](docs/RECOVERY.md) · [English](docs/README.en.md)
 
-> **Estado deste repositório:** interface 2.2 recuperada, documentação técnica e demonstração local. A exportação completa do backend Apps Script ainda precisa ser incorporada. Este pacote não constitui uma distribuição implantável do sistema institucional.
+> **Estado deste repositório:** os 24 arquivos da versão 18 do Apps Script foram importados, incluindo a interface identificada como 2.2. Configuração institucional removida do código público, demonstração isolada e 9 testes locais aprovados. A cópia requer configuração e homologação antes de uma nova implantação. [Guia de instalação](docs/SETUP.md).
 
 ## O problema
 
@@ -31,7 +31,7 @@ O portal organiza essas informações em uma interface comum e distingue **cadas
 - Navegação pelos módulos e exemplos de triagem e assinatura já revisados.
 - Formulários de relatórios e planos de aula, com geração desativada no ambiente demonstrativo.
 
-O piloto B1 aparece na interface recuperada; seu motor não foi importado. Ele não representa certificação CEFR. O gerador de planos descrito no histórico utiliza modelos estruturados, sem dependência de IA paga.
+O motor e a interface do piloto B1 estão incluídos no código do servidor. Ele não representa certificação CEFR. O gerador de planos descrito no histórico utiliza modelos estruturados, sem dependência de IA paga.
 
 ## Experimentar
 
@@ -57,7 +57,7 @@ flowchart TD
   B --> E[Google Docs: relatórios e planos]
 ```
 
-A interface usa `google.script.run` para chamar funções de servidor. O histórico do projeto descreve autorização por conta institucional, controle de concorrência e auditoria. Esses mecanismos precisam ser reconferidos na exportação integral antes de uma nova implantação.
+A interface usa `google.script.run` para chamar funções de servidor. O servidor inclui autorização por conta, controle de concorrência e auditoria. Os testes locais cobrem autorização e contratos selecionados; permissões e gravações reais devem ser homologadas em uma cópia de teste.
 
 ## Decisões que importam
 
@@ -70,7 +70,9 @@ A interface usa `google.script.run` para chamar funções de servidor. O histór
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `src/Portal.html` | Interface recuperada, com URL institucional substituída por configuração |
+| `apps-script/` | 19 módulos originais, configuração nova, Index e manifesto |
+| `archive/v18/` | Três interfaces históricas, fora da implantação |
+| `src/Portal.html` | Snapshot dedicado à demonstração local |
 | `demo/` | Adaptador fictício e demonstração gerada |
 | `docs/` | Estudo de caso, arquitetura, contratos, recuperação e apresentação em inglês |
 | `scripts/` | Geração da demonstração e verificações estáticas |
@@ -81,7 +83,7 @@ A interface usa `google.script.run` para chamar funções de servidor. O histór
 
 - [x] Recuperar e identificar a origem da interface 2.2.
 - [x] Criar uma demonstração isolada e documentação de portfólio.
-- [ ] Incorporar todos os arquivos `.gs`, HTML auxiliares e `appsscript.json` da versão implantada.
+- [x] Incorporar os 24 arquivos da versão 18: `.gs`, HTMLs e manifesto.
 - [ ] Validar o projeto integral em uma planilha de homologação.
 - [ ] Evoluir o painel de pendências por escola e a lista de participantes autorizados.
 

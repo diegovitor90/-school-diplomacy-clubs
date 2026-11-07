@@ -4,7 +4,7 @@ An educational operations portal developed in the context of IEMA's School Diplo
 
 The project brings student continuity, document tracking and pedagogical support into a shared administrative interface. Its key workflow distinguishes receiving a file, confirming the student's document link and manually reviewing a signature.
 
-**Repository status:** recovered version 2.2 frontend, an isolated synthetic-data demo and technical documentation. The complete institutional Apps Script backend has not yet been imported. This is not a deployable copy of the production system.
+**Repository status:** all 24 source files from Apps Script version 18 imported, including the frontend labeled 2.2. Production identifiers are replaced by Script Properties. Nine local tests pass. Workspace integration testing is still required before deployment. See [setup](SETUP.md).
 
 ## Explore
 

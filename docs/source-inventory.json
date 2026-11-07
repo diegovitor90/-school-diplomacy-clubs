@@ -1,10 +1,176 @@
 {
-  "source": "Texto colado(20261106-135255).txt",
-  "original_sha256": "1f9a2f1595ada9b08569012498d1a57a054855da2e2d2319089a3c200e197030",
-  "recovered": "HTML frontend 2.2",
-  "changes": [
-    "CRLF normalized to LF",
-    "institutional pilot deployment URL replaced with template variable SDC_PILOT_URL"
-  ],
-  "backend_status": "not imported; snippets in conversation are not a complete export"
+  "version": 18,
+  "exportedOn": "2026-11-07",
+  "sourceFiles": 24,
+  "method": "Read-only copy from Apps Script project history, version 18",
+  "files": [
+    {
+      "source": "appsscript.json",
+      "path": "apps-script/appsscript.json",
+      "sourceSha256": "f3099a6af123529ad5d254571f56fee51676c64ee9727094614deb042a4bc1c4",
+      "publishedSha256": "f3099a6af123529ad5d254571f56fee51676c64ee9727094614deb042a4bc1c4",
+      "configurationAdapted": false
+    },
+    {
+      "source": "Código.gs",
+      "path": "apps-script/Código.gs",
+      "sourceSha256": "a3cf2f0423daf81a0dd85ef8e27549984c5031593a5f800c8f5c005ae814ebe4",
+      "publishedSha256": "7d6d5da1155c479b179aa06f39ed4c34edbd05a8466a5363a6a558c7c9ffd293",
+      "configurationAdapted": true
+    },
+    {
+      "source": "Index 1.9 Backup.html",
+      "path": "archive/v18/Index 1.9 Backup.html",
+      "sourceSha256": "31ac7f049687b5f2e72b1d473400067a69599e910013a7da8d22732f21d28b0f",
+      "publishedSha256": "cd61b616b1262d59e220af33faaf8d932e52c216a95c33818ba162e12ce1e6ea",
+      "configurationAdapted": true
+    },
+    {
+      "source": "Index.html",
+      "path": "apps-script/Index.html",
+      "sourceSha256": "dba8ec2044a9c564484b1798259ccc8699ba8f081dfc6b59bdaa2adf3a7088c4",
+      "publishedSha256": "45b5322b64a9959503112bd6cb14b76cf58294e795b1b4ec237121e6f5f99c83",
+      "configurationAdapted": true
+    },
+    {
+      "source": "Index_Backup_v1_2.html",
+      "path": "archive/v18/Index_Backup_v1_2.html",
+      "sourceSha256": "de0de8cf870d5a48de1f9e163cd0c3ccb6a4b9bb35da1eba59dd53c4b00990c3",
+      "publishedSha256": "de0de8cf870d5a48de1f9e163cd0c3ccb6a4b9bb35da1eba59dd53c4b00990c3",
+      "configurationAdapted": false
+    },
+    {
+      "source": "AutomacaoDocumentos.gs",
+      "path": "apps-script/AutomacaoDocumentos.gs",
+      "sourceSha256": "8c17f61b6dab477175f9e88f1cb07d6c25891228982557b126eb00c697f69614",
+      "publishedSha256": "c998b28695957602df6d58fd8833ffebd9ba082b63277961df2612e159b4b2ec",
+      "configurationAdapted": true
+    },
+    {
+      "source": "TriagemAssistida.gs",
+      "path": "apps-script/TriagemAssistida.gs",
+      "sourceSha256": "1a0750803277ca4464ed49f02b139003359449256c7047fcd35d04b7378c67b2",
+      "publishedSha256": "c1e63ff32ec1e66e5b1f782a916392490eea8dfda7af710ca331f9cdc10b7fba",
+      "configurationAdapted": true
+    },
+    {
+      "source": "AprovacaoDocumentalSDC.gs",
+      "path": "apps-script/AprovacaoDocumentalSDC.gs",
+      "sourceSha256": "2d392e4c324ed825853a37fb8bdef765598986dce7c0978c0c33453e11f966fc",
+      "publishedSha256": "0676b110f69413152e64e6f8892e7ab2f476667483476e0878a6c24950095412",
+      "configurationAdapted": true
+    },
+    {
+      "source": "ValidacaoAssinaturasSDC.gs",
+      "path": "apps-script/ValidacaoAssinaturasSDC.gs",
+      "sourceSha256": "ef51346851b9dadc5e2835e0685ee3045a3f2266e0d946331e9fc285e04cd994",
+      "publishedSha256": "ef51346851b9dadc5e2835e0685ee3045a3f2266e0d946331e9fc285e04cd994",
+      "configurationAdapted": false
+    },
+    {
+      "source": "HomologacaoRejeicaoSDC.gs",
+      "path": "apps-script/HomologacaoRejeicaoSDC.gs",
+      "sourceSha256": "713754c89489603581ebcb2cd173eeb4c334602e48dcda683333a5c890311b41",
+      "publishedSha256": "713754c89489603581ebcb2cd173eeb4c334602e48dcda683333a5c890311b41",
+      "configurationAdapted": false
+    },
+    {
+      "source": "GerarRelatoriosMensalSDC.gs",
+      "path": "apps-script/GerarRelatoriosMensalSDC.gs",
+      "sourceSha256": "9d8e8f376994c6e8db4bca4d8c9625e1b277d5d4cc46fa9cfec0f172372c1cde",
+      "publishedSha256": "9d8e8f376994c6e8db4bca4d8c9625e1b277d5d4cc46fa9cfec0f172372c1cde",
+      "configurationAdapted": false
+    },
+    {
+      "source": "gerarPlanoDeAulaSDC.gs",
+      "path": "apps-script/gerarPlanoDeAulaSDC.gs",
+      "sourceSha256": "b407e06eb4f0d4adc6aac0934314d6cb3395d73ec8213db8c98bba01c617f51b",
+      "publishedSha256": "b407e06eb4f0d4adc6aac0934314d6cb3395d73ec8213db8c98bba01c617f51b",
+      "configurationAdapted": false
+    },
+    {
+      "source": "BancoQuestoesSDC.gs",
+      "path": "apps-script/BancoQuestoesSDC.gs",
+      "sourceSha256": "22952cf33fa58295501fa993e4e99fc5d85ca5f97d86c2da6325f3409d3c9900",
+      "publishedSha256": "22952cf33fa58295501fa993e4e99fc5d85ca5f97d86c2da6325f3409d3c9900",
+      "configurationAdapted": false
+    },
+    {
+      "source": "TestarCadastroQuestaoSDC.gs",
+      "path": "apps-script/TestarCadastroQuestaoSDC.gs",
+      "sourceSha256": "eb8a3e514745ff36d6410e2c8190d970c1c4a9d3088c4e47f176a3fd8dc1c5a2",
+      "publishedSha256": "eb8a3e514745ff36d6410e2c8190d970c1c4a9d3088c4e47f176a3fd8dc1c5a2",
+      "configurationAdapted": false
+    },
+    {
+      "source": "CuradoriaQuestoesSDC.gs",
+      "path": "apps-script/CuradoriaQuestoesSDC.gs",
+      "sourceSha256": "44b3bfae3c2de892e157cda86e698eefaf8dfcc34ae728ccfb8cf513ec6ddc10",
+      "publishedSha256": "44b3bfae3c2de892e157cda86e698eefaf8dfcc34ae728ccfb8cf513ec6ddc10",
+      "configurationAdapted": false
+    },
+    {
+      "source": "MotorDeProvaSDC.gs",
+      "path": "apps-script/MotorDeProvaSDC.gs",
+      "sourceSha256": "2f0a23f119a822bea1148375487034f906c496950d55cc9a1e9f506bd0cd71b1",
+      "publishedSha256": "2f0a23f119a822bea1148375487034f906c496950d55cc9a1e9f506bd0cd71b1",
+      "configurationAdapted": false
+    },
+    {
+      "source": "CadastrarQuestoesPilotoB1SDC.gs",
+      "path": "apps-script/CadastrarQuestoesPilotoB1SDC.gs",
+      "sourceSha256": "b1dd160d3cce6acb58d75d60627569e531ea029a26fa26798fa0c30820283450",
+      "publishedSha256": "b1dd160d3cce6acb58d75d60627569e531ea029a26fa26798fa0c30820283450",
+      "configurationAdapted": false
+    },
+    {
+      "source": "RevisaoPilotoSDC.gs",
+      "path": "apps-script/RevisaoPilotoSDC.gs",
+      "sourceSha256": "771db0cb25dc132d0b467fa8b829c78a24cedda6dbbb51b618caaa56a96c83e6",
+      "publishedSha256": "771db0cb25dc132d0b467fa8b829c78a24cedda6dbbb51b618caaa56a96c83e6",
+      "configurationAdapted": false
+    },
+    {
+      "source": "CuradorFinalQuestoesB1SDC.gs",
+      "path": "apps-script/CuradorFinalQuestoesB1SDC.gs",
+      "sourceSha256": "f3d0f76953d0741e0a50cbcb88502d1fae8808dfb3d37fc6eb984671b7dc37fa",
+      "publishedSha256": "f3d0f76953d0741e0a50cbcb88502d1fae8808dfb3d37fc6eb984671b7dc37fa",
+      "configurationAdapted": false
+    },
+    {
+      "source": "AprovarQuestoesPilotoSDC.gs",
+      "path": "apps-script/AprovarQuestoesPilotoSDC.gs",
+      "sourceSha256": "ee1e83b9e0a93b4c9558858482dfe19a733269dd65a24d367f46d4484a800c41",
+      "publishedSha256": "ee1e83b9e0a93b4c9558858482dfe19a733269dd65a24d367f46d4484a800c41",
+      "configurationAdapted": false
+    },
+    {
+      "source": "AplicacaoAvaliacaoSDC.gs",
+      "path": "apps-script/AplicacaoAvaliacaoSDC.gs",
+      "sourceSha256": "232a057ca3fe1110822b7afb5886d1576fbc7d697b0503734962eafa0359cef6",
+      "publishedSha256": "232a057ca3fe1110822b7afb5886d1576fbc7d697b0503734962eafa0359cef6",
+      "configurationAdapted": false
+    },
+    {
+      "source": "AvaliacaoWebPilotoSDC.gs",
+      "path": "apps-script/AvaliacaoWebPilotoSDC.gs",
+      "sourceSha256": "62fc5b2b192af21b034a76c88aaf54f1b12c28e66c6f2dca7e06266eb6e6d702",
+      "publishedSha256": "62fc5b2b192af21b034a76c88aaf54f1b12c28e66c6f2dca7e06266eb6e6d702",
+      "configurationAdapted": false
+    },
+    {
+      "source": "AdministrativoSDC20.gs",
+      "path": "apps-script/AdministrativoSDC20.gs",
+      "sourceSha256": "f87b01bd5812a047ccb0214ba15ff0dff6738f06540e62343bf6b87e8c0daac0",
+      "publishedSha256": "0629b758b49c212d52bd4e29513f76a6923c721c66e990ff7fee99c2395f8cd9",
+      "configurationAdapted": true
+    },
+    {
+      "source": "Index_SDC_v1.9.html",
+      "path": "archive/v18/Index_SDC_v1.9.html",
+      "sourceSha256": "e66f1495ad01ef19bbdf421b08f21c03d4d99fcffe5dee6b3270a9a74852d665",
+      "publishedSha256": "f569fc50c63d061fe386729dae64cab00abe9f7684700316d880bcb23036c31d",
+      "configurationAdapted": true
+    }
+  ]
 }

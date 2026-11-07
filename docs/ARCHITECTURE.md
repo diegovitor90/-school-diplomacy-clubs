@@ -5,7 +5,7 @@
 | Camada | Responsabilidade | Evidência disponível |
 | --- | --- | --- |
 | Interface | Navegação, indicadores, filtros, formulários e solicitações de revisão | HTML 2.2 recuperado |
-| Apps Script | Autorização, leitura, validação e escrita | Trechos no histórico; exportação pendente |
+| Apps Script | Autorização, leitura, validação e escrita | Código da versão 18 importado em `apps-script/` |
 | Sheets | Cadastros, situações documentais e históricos | Estrutura descrita no projeto |
 | Drive | Termos e documentos de trabalho | Fluxo descrito no projeto |
 | Docs | Relatórios e planos de aula | Geradores descritos no histórico |

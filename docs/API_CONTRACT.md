@@ -1,6 +1,6 @@
 # Contrato observado na interface
 
-Este inventário descreve o cliente recuperado. Não declara que as implementações de servidor estão incluídas ou testadas.
+Este inventário descreve o cliente recuperado. As implementações estão incluídas em `apps-script/`; testes locais cobrem contratos selecionados, sem integração com Google Workspace.
 
 | Função | Entrada do cliente | Resposta usada |
 | --- | --- | --- |

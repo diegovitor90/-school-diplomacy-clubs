@@ -1,46 +1,28 @@
-# Recuperação da versão institucional
+# Importação e pontos de atenção
 
-## Importado
+Em 07/11/2026, os 24 arquivos foram copiados em modo somente leitura do histórico **Versão 18** do projeto Portal SDC — MVP 2.0. O Index identifica a interface como 2.2; esses números representam camadas diferentes. A associação de cada URL /exec a uma implantação não foi alterada nem verificada nesta importação.
 
-`src/Portal.html` foi extraído do arquivo de texto da interface fornecido pelo responsável. A identidade da origem e seu SHA-256 estão em `source-inventory.json`. Foram normalizadas quebras de linha e substituído o endereço institucional do piloto por configuração. A interface original em produção não foi alterada.
+`source-inventory.json` registra caminhos, SHA-256 da origem e SHA-256 da cópia pública. São 19 arquivos GS, quatro HTMLs e um manifesto. Três HTMLs antigos estão em `archive/v18/`. `Config.gs` é uma adição da distribuição pública. O snapshot `src/Portal.html` permanece dedicado à demonstração.
 
-## Ainda necessário
+## Adaptações da cópia pública
 
-Exportar o projeto **da implantação 2.2 em uso**, incluindo todos os arquivos `.gs`, HTML auxiliares e `appsscript.json`. O link terminado em `/exec` não fornece o código-fonte. No editor Apps Script, conferir a versão da implantação e obter os arquivos correspondentes; não presumir que o código atual do editor seja idêntico à versão publicada.
+- IDs da planilha e pasta substituídos por Script Properties.
+- Listas de revisores e administradores derivadas de `SDC_REVIEWER_EMAILS`; configuração vazia nega acesso.
+- URL institucional removida dos HTMLs. `doGet` avalia o template Index e fornece a URL do piloto a partir da própria implantação.
+- Manifesto preservado, inclusive acesso MYSELF. Nenhuma função foi executada, nenhuma implantação ou planilha institucional foi alterada.
 
-As chamadas esperadas estão em [API_CONTRACT.md](API_CONTRACT.md). Também faltam os módulos completos de sincronização, sugestões, auditoria, geradores, piloto e configuração, além do código do formulário escolar se ele entrar no escopo.
+## Achados de leitura ainda abertos
 
-Não exportar linhas de estudantes, PDFs de termos, tokens, credenciais ou a configuração privada junto do código de portfólio.
+1. A sincronização reinicia a varredura e conta arquivos conhecidos no limite de 400; arquivos posteriores podem ficar sem processamento. Falta paginação persistida.
+2. A lista de assinaturas parte apenas das triagens aprovadas; vínculos automáticos por ID podem ficar fora dela.
+3. A recomputação de sugestões preserva decisões humanas, mas recalcula ID e nome; precisa impedir associação de decisão antiga a nova sugestão.
+4. Relatórios e dashboard têm critérios diferentes de validação: dashboard exige status e assinatura válida, enquanto relatórios contam status. Duplicidades podem distorcer estados e totais.
+5. Registro, triagem e auditoria são gravações separadas; falta testar falhas parciais e recuperação.
+6. Links vindos da base precisam de validação de destino além de escape HTML.
+7. Identidade da sessão e permissões precisam ser testadas na implantação de homologação.
 
-## Pontos técnicos para revisar na importação
+Não se tratam de falhas reproduzidas em produção. A importação mantém a lógica de origem para permitir revisão rastreável. O problema de escapes e função duplicada dos textos colados não apareceu nos arquivos reais: os módulos compilam juntos.
 
-1. **Paginação da sincronização:** o trecho reinicia a varredura e conta arquivos já conhecidos no limite de 400. Acima desse limite, arquivos posteriores podem nunca ser processados. Usar continuidade persistida e testar mais de um lote.
-2. **Assinaturas fora da triagem:** registros vinculados automaticamente por ID podem não aparecer na tela que lista apenas triagens aprovadas. Garantir cobertura de ambos os caminhos.
-3. **Sugestões após decisão:** a rotina preserva revisão e observação, mas recalcula ID e nome. Uma decisão anterior não deve ficar associada silenciosamente a uma nova sugestão.
-4. **Estados sobrepostos:** contabilizar o mesmo ID em múltiplos estados pode distorcer totais; definir regra por estudante e tratar duplicidades como inconsistência.
-5. **Falhas parciais:** gravação no registro, atualização da triagem e auditoria são operações separadas. Testar interrupções e recuperação idempotente.
-6. **Formato copiado:** os trechos colados contêm escapes de formatação e uma função de planos duplicada. Importar arquivos reais, sem substituir a produção por texto decodificado automaticamente.
-7. **Links de arquivos:** escapar HTML não valida o protocolo de uma URL. Aplicar validação de destino antes de renderizar links vindos da base.
-8. **Identidade:** conferir o comportamento da conta ativa e a restrição de acesso na implantação real; interface oculta não equivale a controle de acesso.
+## Próxima etapa técnica
 
-Estes são achados de leitura dos trechos, não falhas reproduzidas na implantação atual.
-
-## Critério para considerar o código completo
-
-- Todas as funções usadas pela interface têm implementação e configuração documentadas.
-- A base de homologação usa somente exemplos fictícios.
-- Leitura sem autorização, concorrência, duplicidade e repetição de decisões foram testadas.
-- Conferência atende documentos recebidos por todos os caminhos.
-- Relatórios e planos são gerados e registrados corretamente em homologação.
-- Backup e procedimento de retorno à versão anterior estão definidos.
-- Uma nova implantação de teste reproduz o comportamento esperado sem alterar a produção.
-
-## Publicação no GitHub
-
-Nome proposto: `school-diplomacy-clubs`.
-
-Descrição: `Portal de gestão educacional para School Diplomacy Clubs: acompanhamento de estudantes, documentação e apoio pedagógico com Google Apps Script.`
-
-Tópicos sugeridos: `google-apps-script`, `education`, `javascript`, `google-sheets`, `edtech`, `school-diplomacy`.
-
-O pacote atual contém uma demonstração publicável sem dados reais. A licença e a autorização sobre o código institucional precisam ser definidas antes de tratá-lo como software livre. Criar inicialmente um repositório privado permite revisar esse ponto e completar a importação.
+Usar uma planilha e pasta fictícias para homologar leitura, vínculo automático, revisão manual, assinatura, concorrência, repetição, relatórios e planos. O formulário escolar é outro projeto e não está incluído nesta exportação. Não há certificação CEFR automática; o piloto é técnico.

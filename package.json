@@ -1,8 +1,8 @@
 {
   "name": "school-diplomacy-clubs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "SDC Portal \u2014 recovered frontend and isolated portfolio demonstration",
+  "description": "SDC Portal \u2014 Apps Script version 18 source and isolated portfolio demo",
   "scripts": {
     "build:demo": "node scripts/build-demo.mjs",
     "test": "node --test",

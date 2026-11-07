@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>SDC | Painel de Gestão 2.0</title>
+
+  <style>
+    /* 1. Layout, navegação, tabelas e componentes originais */
+    :root {
+      font-family: Inter, Arial, sans-serif;
+      color: #18263d;
+      background: #f5f7fc;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, select { font: inherit; }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 235px;
+      background: #fff;
+      border-right: 1px solid #e6eaf2;
+      padding: 24px 14px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      font-weight: 800;
+      color: #245dd9;
+      font-size: 21px;
+      padding: 0 12px 26px;
+    }
+
+    .brand small {
+      display: block;
+      color: #8794a7;
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .nav { display: grid; gap: 7px; }
+
+    .nav button {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      color: #52627a;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-weight: 600;
+    }
+
+    .nav button.active,
+    .nav button:hover {
+      background: #eaf1ff;
+      color: #2259d3;
+    }
+
+    .navfoot {
+      margin-top: auto;
+      color: #8290a4;
+      font-size: 12px;
+      padding: 12px;
+    }
+
+    .mainarea {
+      margin-left: 235px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      min-height: 77px;
+      background: white;
+      border-bottom: 1px solid #e6eaf2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 30px;
+      gap: 15px;
+    }
+
+    .topbar h1 { font-size: 20px; margin: 0; }
+
+    .topbar p {
+      margin: 5px 0 0;
+      color: #8290a4;
+      font-size: 12px;
+    }
+
+    .userchip {
+      background: #f3f6fc;
+      border-radius: 24px;
+      padding: 10px 14px;
+      color: #586981;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .wrap {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 26px 30px 50px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card, .panel {
+      background: white;
+      border: 1px solid #e8edf5;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 3px 12px #1b386009;
+    }
+
+    .card { min-height: 135px; }
+
+    .card strong {
+      font-size: 32px;
+      display: block;
+      margin-top: 8px;
+      color: #1a2b44;
+    }
+
+    .card span, .muted {
+      color: #73839b;
+      font-size: 13px;
+    }
+
+    .panel { margin-top: 20px; }
+
+    h2 { font-size: 18px; margin: 0 0 16px; }
+
+    .barrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 13px 0;
+    }
+
+    .barrow label {
+      width: 90px;
+      color: #56647b;
+    }
+
+    .bar {
+      height: 14px;
+      background: #edf2ff;
+      border-radius: 10px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .bar > div {
+      height: 100%;
+      background: #477ff0;
+      border-radius: 10px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    select, input {
+      padding: 11px;
+      border: 1px solid #dbe3f0;
+      border-radius: 9px;
+      min-width: 190px;
+      background: #fff;
+      color: #263b59;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid #e9eef5;
+    }
+
+    th {
+      background: #f7f9fd;
+      color: #56667e;
+      font-size: 12px;
+    }
+
+    td { overflow-wrap: anywhere; }
+    .tablewrap { overflow-x: auto; }
+
+    .pill {
+      border-radius: 20px;
+      padding: 5px 10px;
+      background: #eef4ff;
+      display: inline-block;
+      color: #355ba1;
+    }
+
+    .note {
+      margin-top: 14px;
+      color: #7a899d;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 14px;
+      background: #2e68dc;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(.96); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    td button {
+      margin: 3px 3px 3px 0;
+      font-size: 12px;
+      padding: 9px 11px;
+    }
+
+    #error { color: #ad2338; }
+    #loading { padding: 40px; text-align: center; }
+
+    .view[hidden] { display: none !important; }
+
+    .sectionhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .sectionhead p {
+      margin: 0;
+      color: #7b8ba1;
+      font-size: 13px;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .two .panel { margin-top: 0; }
+
+    /* Cartões aprimorados */
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #edf3ff;
+      color: #3169db;
+      font-size: 21px;
+    }
+
+    .card-note {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6c7c92;
+    }
+
+    .card-note.good { color: #13825a; }
+    .card-note.attention { color: #b46a16; }
+
+    .card-note .arrow { font-size: 16px; }
+
+    .card .progress {
+      height: 5px;
+      border-radius: 6px;
+      background: #eef2fa;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .card .progress i {
+      display: block;
+      height: 100%;
+      background: #477ff0;
+      border-radius: 6px;
+    }
+
+    /* Novo módulo CEFR */
+    .pilot-hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .pilot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .pilot-metric {
+      padding: 18px;
+      border-radius: 12px;
+      background: #f5f8ff;
+      border: 1px solid #e4edfa;
+    }
+
+    .pilot-metric strong {
+      font-size: 27px;
+      display: block;
+      margin: 0 0 7px;
+    }
+
+    .pilot-metric span {
+      font-size: 12px;
+      color: #667994;
+    }
+
+    .pilot-action {
+      display: inline-block;
+      background: #2869db;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 14px 19px;
+      margin-top: 10px;
+    }
+
+    .pilot-action:hover { background: #2256bd; }
+
+    .pilot-warning {
+      background: #fff8e7;
+      border: 1px solid #f3deb4;
+      border-radius: 11px;
+      padding: 14px;
+      color: #855519;
+      font-size: 13px;
+      margin-top: 16px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1050px) {
+      .sidebar { width: 190px; }
+      .mainarea { margin-left: 190px; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .wrap { padding: 20px; }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        padding: 10px;
+      }
+
+      .brand { padding: 6px; }
+      .nav { display: flex; overflow: auto; }
+
+      .nav button {
+        width: auto;
+        white-space: nowrap;
+        padding: 9px;
+      }
+
+      .navfoot { display: none; }
+      .mainarea { margin-left: 0; }
+
+      .topbar {
+        padding: 12px 18px;
+        min-height: auto;
+      }
+
+      .userchip { display: none; }
+
+      .cards, .two, .pilot-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap { padding: 14px; }
+
+      .pilot-action {
+        display: block;
+        text-align: center;
+      }
+    }
+
+
+    /* 2. Dashboard: visão documental e indicadores visuais */
+    .dashboard-duo {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .dashboard-duo .panel { margin-top: 0; }
+    .dashboard-duo .panel h2 { margin-bottom: 18px; }
+
+    .triagem-wrap {
+      display: grid;
+      grid-template-columns: minmax(165px, 210px) minmax(0, 1fr);
+      align-items: center;
+      gap: 24px;
+      min-height: 240px;
+    }
+
+    .donut-box { display: flex; justify-content: center; }
+
+    .donut {
+      width: 205px;
+      height: 205px;
+      max-width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      isolation: isolate;
+    }
+
+    .donut::after {
+      content: '';
+      position: absolute;
+      inset: 33px;
+      background: #fff;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .donut-center {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 12px;
+    }
+
+    .donut-total {
+      font-size: 32px;
+      font-weight: 800;
+      color: #102a5c;
+      line-height: 1.1;
+    }
+
+    .donut-label {
+      margin-top: 5px;
+      color: #687b97;
+      font-size: 12px;
+    }
+
+    .legend-list { display: grid; gap: 14px; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-width: 0;
+      font-size: 13px;
+      color: #435577;
+    }
+
+    .legend-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .legend-dot { width: 13px; height: 13px; border-radius: 50%; flex: 0 0 13px; }
+    .legend-value { font-weight: 800; font-size: 17px; color: #102a5c; }
+
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .program-card {
+      border: 1px solid #e6edf7;
+      border-radius: 15px;
+      padding: 18px;
+      background: #fff;
+      min-width: 0;
+    }
+
+    .program-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .program-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      line-height: 1.45;
+      color: #5c6f8c;
+      text-transform: uppercase;
+      min-height: 35px;
+    }
+
+    .program-value {
+      margin-top: 8px;
+      font-size: 29px;
+      font-weight: 800;
+      color: #102a5c;
+    }
+
+    .bg-aprovado { background: #eaf7f1; color: #168354; }
+    .bg-analise { background: #eaf2ff; color: #2f73ea; }
+    .bg-pendente { background: #fff6dd; color: #b98908; }
+    .bg-rejeitado { background: #fff0ed; color: #c45644; }
+
+    .dashboard-note { margin-top: 18px; }
+    .dashboard-section { margin-top: 20px; }
+
+    @media (max-width: 1250px) {
+      .triagem-wrap { grid-template-columns: 1fr; }
+      .program-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 1050px) {
+      .dashboard-duo { grid-template-columns: 1fr; }
+      .triagem-wrap { grid-template-columns: minmax(165px, 210px) minmax(0, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .triagem-wrap { grid-template-columns: 1fr; }
+      .program-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .donut { width: 190px; height: 190px; }
+      .donut::after { inset: 31px; }
+    }
+
+    @media (max-width: 380px) {
+      .program-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="brand">
+      ◈ SDC Portal
+      <small>School Diplomacy Clubs · 2026–2027</small>
+    </div>
+
+    <nav class="nav" aria-label="Navegação principal">
+      <button class="active"
+              data-target="dashboard"
+              onclick="showView('dashboard')">
+        ▦ &nbsp; Dashboard
+      </button>
+
+      <button data-target="students"
+              onclick="showView('students')">
+        ♙ &nbsp; Estudantes
+      </button>
+
+      <button data-target="documents"
+              onclick="showView('documents')">
+        ▤ &nbsp; Triagem documental
+      </button>
+
+      <button data-target="signatures"
+              onclick="showView('signatures')">
+        ✓ &nbsp; Assinaturas
+      </button>
+
+      <button data-target="cefr"
+              onclick="showView('cefr')">
+        🎓 &nbsp; Nivelamento CEFR
+      </button>
+    </nav>
+
+    <div class="navfoot">
+      Acesso restrito · MVP 2.0
+      <br>
+      Dados protegidos
+    </div>
+  </aside>
+
+  <div class="mainarea">
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Visão geral</h1>
+        <p>Painel administrativo · School Diplomacy Clubs</p>
+      </div>
+
+      <div class="userchip">◉ Equipe autorizada</div>
+    </div>
+
+    <main class="wrap">
+      <div id="loading">Carregando dados da planilha…</div>
+      <div id="error" role="alert"></div>
+
+      <div id="content" hidden>
+
+        <!-- DASHBOARD -->
+        <div class="view" data-view="dashboard">
+          <div class="sectionhead">
+            <div>
+              <h2>Indicadores do programa</h2>
+              <p>
+                Visão consolidada · percentuais representam proporções
+                da base, não evolução mensal.
+              </p>
+            </div>
+          </div>
+
+          <!-- Indicadores gerais existentes; mantidos em tempo real -->
+          <section class="cards" id="cards" aria-label="Indicadores gerais"></section>
+
+          <!-- Dois painéis principais do Dashboard -->
+          <div class="dashboard-duo">
+            <section class="panel">
+              <h2>Status documental dos estudantes</h2>
+              <div id="triagemStatusBox" aria-live="polite"></div>
+              <p class="note">
+                Os status são calculados a partir dos registros retornados
+                pelo servidor. Vínculo aprovado não equivale a assinatura validada.
+              </p>
+            </section>
+
+            <section class="panel">
+              <h2>Distribuição por nível CEFR</h2>
+              <div id="cefrDistributionBox"></div>
+            </section>
+          </div>
+
+          <!-- Indicadores resumidos da documentação -->
+          <section class="panel dashboard-section">
+            <h2>Indicadores da situação documental</h2>
+            <div id="programIndicatorsBox"></div>
+            <p class="note dashboard-note">
+              Cada estudante integra uma única categoria no resumo.
+              Documentos recebidos e assinaturas validadas são etapas diferentes.
+            </p>
+          </section>
+        </div>
+
+        <!-- ESTUDANTES -->
+        <div class="view" data-view="students" hidden>
+          <section class="panel" style="margin-top:0">
+            <h2>Consulta de estudantes confirmados</h2>
+
+            <div class="filters">
+              <select id="school">
+                <option value="">Todas as escolas</option>
+              </select>
+
+              <select id="level">
+                <option value="">Todos os níveis CEFR</option>
+              </select>
+
+              <input id="search"
+                     placeholder="Buscar pelo ID do estudante">
+
+              <button onclick="clearFilters()">
+                Limpar filtros
+              </button>
+            </div>
+
+            <p class="muted" id="count"></p>
+
+            <div class="tablewrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Escola</th>
+                    <th>CEFR</th>
+                    <th>Situação documental</th>
+                    <th>Assinatura</th>
+                  </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+
+            <p class="note">
+              Esta versão não exibe nomes, contatos ou documentos
+              pessoais na consulta geral. Restrinja a publicação
+              à equipe autorizada.
+            </p>
+          </section>
+        </div>
+
+        <!-- TRIAGEM DOCUMENTAL -->
+        <div class="view" data-view="documents" hidden>
+          <section class="panel"
+                   id="triagemPanel"
+                   style="margin-top:0">
+
+            <h2>Revisão documental — equipe autorizada</h2>
+
+            <p class="note">
+              Aprovar vínculo NÃO valida assinatura.
+              Abra o PDF e confira identidade e escola
+              antes de aprovar.
+            </p>
+
+            <button onclick="loadTriagem()">
+              Atualizar triagem
+            </button>
+
+            <p id="triagemStatus"
+               class="muted"
+               role="status"></p>
+
+            <div class="tablewrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Arquivo</th>
+                    <th>Escola</th>
+                    <th>ID sugerido</th>
+                    <th>Resultado</th>
+                    <th>Revisão</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="triagemRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- ASSINATURAS -->
+        <div class="view" data-view="signatures" hidden>
+          <section class="panel"
+                   id="assinaturaPanel"
+                   style="margin-top:0">
+
+            <h2>
+              Conferência de assinaturas — equipe autorizada
+            </h2>
+
+            <p class="note">
+              Somente vínculos aprovados.
+              A validação exige abrir o PDF e conferir
+              manualmente a assinatura.
+              Cada decisão é registrada na auditoria.
+            </p>
+
+            <button onclick="loadAssinaturas()">
+              Atualizar assinaturas
+            </button>
+
+            <p id="assinaturaStatus"
+               class="muted"
+               role="status"></p>
+
+            <div class="tablewrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Documento</th>
+                    <th>ID</th>
+                    <th>Estudante</th>
+                    <th>Situação</th>
+                    <th>Assinatura</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="assinaturaRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- NOVO MÓDULO: NIVELAMENTO CEFR -->
+        <div class="view" data-view="cefr" hidden>
+          <section class="panel" style="margin-top:0">
+
+            <div class="pilot-hero">
+              <div>
+                <h2>🎓 Nivelamento CEFR — piloto B1</h2>
+                <p class="muted">
+                  Avaliação técnica restrita à equipe autorizada.
+                  Reading e Use of English.
+                </p>
+              </div>
+              <span class="pill">Demonstração</span>
+            </div>
+
+            <div class="pilot-grid">
+              <div class="pilot-metric">
+                <strong>B1</strong>
+                <span>Nível de referência do piloto</span>
+              </div>
+
+              <div class="pilot-metric">
+                <strong>5</strong>
+                <span>Itens revisados usados na prova</span>
+              </div>
+
+              <div class="pilot-metric">
+                <strong>2</strong>
+                <span>Habilidades avaliadas</span>
+              </div>
+            </div>
+
+            <p>
+              Abra a avaliação para testar o envio de respostas
+              e a correção automática no servidor.
+              O resultado será registrado apenas nas
+              abas de homologação.
+            </p>
+
+            <a
+              class="pilot-action"
+              href="<?= SDC_PILOT_URL ?>"
+              target="_blank"
+              rel="noopener noreferrer">
+              Abrir avaliação piloto B1 ↗
+            </a>
+
+            <div class="pilot-warning">
+              <strong>Uso interno:</strong>
+              este piloto usa identidade fictícia e aceita
+              apenas uma tentativa, que já foi registrada.
+              Não constitui certificação CEFR.
+              Não compartilhe o link com estudantes reais.
+            </div>
+
+            <p class="note">
+              Os módulos de autenticação individual,
+              provas reais, múltiplas tentativas e relatório
+              de proficiência permanecem em desenvolvimento.
+            </p>
+          </section>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(el => {
+        el.hidden = el.dataset.view !== name;
+      });
+
+      document.querySelectorAll('.nav button').forEach(b => {
+        b.classList.toggle(
+          'active',
+          b.dataset.target === name
+        );
+      });
+
+      const titles = {
+        dashboard: 'Visão geral',
+        students: 'Estudantes',
+        documents: 'Gestão documental',
+        signatures: 'Conferência de assinaturas',
+        cefr: 'Nivelamento CEFR'
+      };
+
+      document.getElementById('pageTitle').textContent =
+        titles[name] || 'Portal SDC';
+
+      if (name === 'documents') loadTriagem();
+      if (name === 'signatures') loadAssinaturas();
+    }
+
+    let portal;
+
+    function safe(s) {
+      return String(s ?? '').replace(
+        /[&<>"']/g,
+        c => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[c])
+      );
+    }
+
+    /* DASHBOARD - classificação cuidadosa e mutuamente exclusiva por estudante */
+    function normText(v) {
+      return String(v ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
+    }
+
+    function calcularStatusDocumental(students) {
+      const stats = { validados: 0, analise: 0, pendentes: 0, correcao: 0, total: 0 };
+      const linhas = Array.isArray(students) ? students : [];
+
+      linhas.forEach(s => {
+        const situacao = normText(s.situacao);
+        const conferencia = normText(s.conferencia);
+        const ambos = situacao + ' ' + conferencia;
+
+        // Correção é prioridade quando um documento exige providência.
+        if (/correc|rejeitad|indeferid|invalid|irregular/.test(ambos)) {
+          stats.correcao++;
+        } else if (
+          (/\b(validada|validado|conferida|conferido|aprovada)\b/.test(conferencia) &&
+            !/nao|pendente|aguardando|sem /.test(conferencia)) ||
+          (/\b(assinatura|termo|documento)\b.*\b(validada|validado)\b/.test(situacao) &&
+            !/nao|pendente|aguardando/.test(situacao))
+        ) {
+          // Não confundir aprovação de vínculo com validação de assinatura.
+          stats.validados++;
+        } else if (
+          /recebid|enviad|em analise|conferenc|vinculo aprov|aprovad|anexad/.test(ambos)
+        ) {
+          stats.analise++;
+        } else {
+          stats.pendentes++;
+        }
+      });
+
+      stats.total = linhas.length;
+      return stats;
+    }
+
+    function renderTriagemStatus(stats) {
+      const total = stats.total;
+      const fatias = [stats.validados, stats.analise, stats.pendentes, stats.correcao];
+      const cores = ['#34b887', '#3d79e8', '#efc54d', '#e27a68'];
+      let atual = 0;
+      const partes = [];
+
+      fatias.forEach((quantidade, i) => {
+        if (!quantidade || !total) return;
+        const inicio = atual;
+        atual += (quantidade / total) * 100;
+        partes.push(`${cores[i]} ${inicio}% ${atual}%`);
+      });
+
+      const grafico = total
+        ? `conic-gradient(${partes.join(', ')})`
+        : '#e9eef5';
+
+      const itens = [
+        ['Validados', stats.validados, cores[0]],
+        ['Em análise', stats.analise, cores[1]],
+        ['Pendentes', stats.pendentes, cores[2]],
+        ['Correção necessária', stats.correcao, cores[3]]
+      ];
+
+      return `
+        <div class="triagem-wrap">
+          <div class="donut-box">
+            <div class="donut" style="background:${grafico}"
+                 role="img"
+                 aria-label="${total} registros de estudantes: ${itens.map(x => x[0] + ' ' + x[1]).join(', ')}">
+              <div class="donut-center">
+                <div class="donut-total">${total}</div>
+                <div class="donut-label">registros</div>
+              </div>
+            </div>
+          </div>
+          <div class="legend-list">
+            ${itens.map(([nome, valor, cor]) => `
+              <div class="legend-item">
+                <span class="legend-left">
+                  <span class="legend-dot" style="background:${cor}"></span>
+                  <span>${nome}</span>
+                </span>
+                <span class="legend-value">${valor}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>`;
+    }
+
+    function renderIndicadoresPrograma(stats) {
+      const itens = [
+        ['Assinaturas validadas', stats.validados, '✓', 'bg-aprovado'],
+        ['Em análise', stats.analise, '◷', 'bg-analise'],
+        ['Pendentes', stats.pendentes, '▤', 'bg-pendente'],
+        ['Correção necessária', stats.correcao, '!', 'bg-rejeitado']
+      ];
+
+      return `<div class="program-grid">
+        ${itens.map(([titulo, valor, icone, classe]) => `
+          <div class="program-card">
+            <div class="program-icon ${classe}" aria-hidden="true">${icone}</div>
+            <div class="program-title">${titulo}</div>
+            <div class="program-value">${valor}</div>
+          </div>
+        `).join('')}
+      </div>`;
+    }
+
+    function renderResumoDocumental(d) {
+      const stats = calcularStatusDocumental(d.students);
+      document.getElementById('triagemStatusBox').innerHTML = renderTriagemStatus(stats);
+      document.getElementById('programIndicatorsBox').innerHTML = renderIndicadoresPrograma(stats);
+    }
+
+    function draw(d) {
+      portal = d;
+
+      document.getElementById('loading').hidden = true;
+      document.getElementById('content').hidden = false;
+
+      const k = d.kpis;
+
+      const pct = (a, b) =>
+        b ? Math.round(a / b * 1000) / 10 : 0;
+
+      const metrics = [
+        [
+          'Escolas',
+          k.escolas,
+          '⌂',
+          'Base institucional cadastrada',
+          'neutral',
+          null
+        ],
+        [
+          'Estudantes na base',
+          k.estudantes,
+          '♙',
+          'Total de registros na base',
+          'neutral',
+          null
+        ],
+        [
+          'Continuidade confirmada',
+          k.confirmados,
+          '✓',
+          pct(k.confirmados, k.estudantes) +
+            '% dos estudantes cadastrados',
+          'good',
+          pct(k.confirmados, k.estudantes)
+        ],
+        [
+          'Termos recebidos',
+          k.recebidos,
+          '▤',
+          'Aguardando conferência de assinatura',
+          'neutral',
+          pct(k.recebidos, k.confirmados)
+        ],
+        [
+          'Termos validados',
+          k.validados,
+          '◈',
+          pct(k.validados, k.confirmados) +
+            '% dos estudantes confirmados',
+          'good',
+          pct(k.validados, k.confirmados)
+        ],
+        [
+          'Termos pendentes',
+          k.pendentes,
+          '◷',
+          'Ainda não recebidos — requer atenção',
+          'attention',
+          pct(k.pendentes, k.confirmados)
+        ]
+      ];
+
+      document.getElementById('cards').innerHTML =
+        metrics.map(([t, v, ico, note, tone, progress]) => `
+          <div class="card">
+            <div class="card-top">
+              <span>${safe(t)}</span>
+              <div class="card-icon" aria-hidden="true">
+                ${ico}
+              </div>
+            </div>
+            <strong>${safe(v)}</strong>
+            <div class="card-note ${tone}">
+              <span class="arrow" aria-hidden="true">
+                ${tone === 'good'
+                  ? '↗'
+                  : tone === 'attention'
+                    ? '→'
+                    : '•'}
+              </span>
+              ${safe(note)}
+            </div>
+            ${progress === null ? '' : `
+              <div class="progress"
+                   role="progressbar"
+                   aria-valuenow="${progress}"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+                <i style="width:${
+                  Math.min(100, Math.max(0, progress))
+                }%"></i>
+              </div>
+            `}
+          </div>
+        `).join('');
+
+      const max = Math.max(
+        1,
+        ...Object.values(d.cefr)
+      );
+
+      document.getElementById('cefrDistributionBox').innerHTML =
+        Object.entries(d.cefr)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([nivel, valor]) => `
+            <div class="barrow">
+              <label>${safe(nivel)}</label>
+              <div class="bar">
+                <div style="width:${
+                  100 * valor / max
+                }%"></div>
+              </div>
+              <b>${valor}</b>
+            </div>
+          `).join('');
+
+      renderResumoDocumental(d);
+
+      document.getElementById('school').innerHTML =
+        '<option value="">Todas as escolas</option>' +
+        d.escolas.map(x =>
+          `<option value="${safe(x)}">${safe(x)}</option>`
+        ).join('');
+
+      document.getElementById('level').innerHTML =
+        '<option value="">Todos os níveis CEFR</option>' +
+        Object.keys(d.cefr).sort().map(x =>
+          `<option value="${safe(x)}">${safe(x)}</option>`
+        ).join('');
+
+      renderRows();
+    }
+
+    function renderRows() {
+      if (!portal) return;
+
+      const school =
+        document.getElementById('school').value;
+
+      const level =
+        document.getElementById('level').value;
+
+      const q =
+        document.getElementById('search')
+          .value.trim().toLowerCase();
+
+      const encontrados = (portal.students || []).filter(s =>
+        (!school || s.escola === school) &&
+        (!level || (s.cefr || 'Não informado') === level) &&
+        (!q || String(s.id).toLowerCase().includes(q))
+      );
+
+      document.getElementById('count').textContent =
+        encontrados.length + ' estudante(s) encontrado(s)';
+
+      document.getElementById('rows').innerHTML =
+        encontrados.slice(0, 200).map(s => `
+          <tr>
+            <td>${safe(s.id)}</td>
+            <td>${safe(s.escola)}</td>
+            <td>${safe(s.cefr)}</td>
+            <td>
+              <span class="pill">${safe(s.situacao)}</span>
+            </td>
+            <td>${safe(s.conferencia)}</td>
+          </tr>
+        `).join('');
+    }
+
+    function clearFilters() {
+      for (const id of ['school', 'level', 'search']) {
+        document.getElementById(id).value = '';
+      }
+      renderRows();
+    }
+
+    for (const id of ['school', 'level', 'search']) {
+      document.getElementById(id).addEventListener(
+        id === 'search' ? 'input' : 'change',
+        renderRows
+      );
+    }
+
+    google.script.run
+      .withSuccessHandler(draw)
+      .withFailureHandler(e => {
+        document.getElementById('loading').hidden = true;
+        document.getElementById('error').textContent =
+          'Erro ao carregar: ' + e.message;
+      })
+      .getPortalData();
+
+    // TRIAGEM DOCUMENTAL
+    let triagem = [];
+
+    function loadTriagem() {
+      const status =
+        document.getElementById('triagemStatus');
+
+      status.textContent = 'Carregando triagem…';
+
+      google.script.run
+        .withSuccessHandler(rows => {
+          triagem = rows;
+          status.textContent =
+            rows.length + ' arquivo(s) na triagem';
+
+          document.getElementById('triagemRows').innerHTML =
+            rows.map((r, i) => `
+              <tr>
+                <td>
+                  <a href="${safe(r.url)}"
+                     target="_blank"
+                     rel="noopener noreferrer">
+                    ${safe(r.arquivo)}
+                  </a>
+                </td>
+                <td>${safe(r.pasta)}</td>
+                <td>
+                  ${safe(r.idSugerido)}
+                  ${safe(r.estudante)}
+                </td>
+                <td>${safe(r.resultado)}</td>
+                <td>${safe(r.revisao)}</td>
+                <td>
+                  ${r.revisao === 'PENDENTE' ? `
+                    <button
+                      onclick="decidir(${i}, 'APROVAR')"
+                      ${r.resultado ===
+                        'SUGESTÃO ÚNICA — conferir documento'
+                          ? ''
+                          : 'disabled'}>
+                      Aprovar vínculo
+                    </button>
+
+                    <button
+                      onclick="decidir(${i}, 'REJEITAR')">
+                      Rejeitar
+                    </button>
+                  ` : '—'}
+                </td>
+              </tr>
+            `).join('');
+        })
+        .withFailureHandler(e => {
+          status.textContent =
+            'Sem acesso à triagem: ' + e.message;
+        })
+        .getTriagemPortalSDC();
+    }
+
+    function decidir(i, decisao) {
+      const r = triagem[i];
+
+      const motivo = prompt(
+        'Justificativa obrigatória para ' +
+        decisao.toLowerCase() +
+        ' o vínculo do arquivo ' +
+        r.arquivo + ':'
+      );
+
+      if (!motivo || !motivo.trim()) return;
+
+      const mensagem = decisao === 'APROVAR'
+        ? 'Você conferiu o PDF e confirma que pertence ' +
+          'ao estudante ID ' + r.idSugerido +
+          '? A assinatura continuará NÃO CONFERIDA.'
+        : 'Confirmar rejeição do vínculo sugerido?';
+
+      if (!confirm(mensagem)) return;
+
+      const status =
+        document.getElementById('triagemStatus');
+
+      status.textContent = 'Registrando decisão…';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          status.textContent =
+            'Decisão registrada: ' + res.estado;
+
+          loadTriagem();
+
+          google.script.run
+            .withSuccessHandler(draw)
+            .getPortalData();
+        })
+        .withFailureHandler(e => {
+          status.textContent = 'Erro: ' + e.message;
+        })
+        .decidirTriagemPortalSDC(
+          r.arquivoId,
+          decisao,
+          motivo
+        );
+    }
+
+    // CONFERÊNCIA DE ASSINATURAS
+    let assinaturas = [];
+
+    function loadAssinaturas() {
+      const status =
+        document.getElementById('assinaturaStatus');
+
+      status.textContent = 'Carregando conferências…';
+
+      google.script.run
+        .withSuccessHandler(rows => {
+          assinaturas = rows;
+
+          status.textContent =
+            rows.length +
+            ' vínculo(s) aprovado(s) encontrado(s)';
+
+          document.getElementById('assinaturaRows').innerHTML =
+            rows.map((r, i) => `
+              <tr>
+                <td>
+                  <a href="${safe(r.url)}"
+                     target="_blank"
+                     rel="noopener noreferrer">
+                    ${safe(r.arquivo)}
+                  </a>
+                </td>
+                <td>${safe(r.id)}</td>
+                <td>${safe(r.estudante)}</td>
+                <td>${safe(r.situacao)}</td>
+                <td>${safe(r.assinatura)}</td>
+                <td>
+                  ${r.elegivel ? `
+                    <button
+                      onclick="decidirAssinatura(${i}, 'VALIDAR')">
+                      Validar assinatura
+                    </button>
+
+                    <button
+                      onclick="decidirAssinatura(${i}, 'CORRECAO')">
+                      Solicitar correção
+                    </button>
+                  ` : '—'}
+                </td>
+              </tr>
+            `).join('');
+        })
+        .withFailureHandler(e => {
+          status.textContent =
+            'Erro: ' + e.message;
+        })
+        .listarAssinaturasSDC();
+    }
+
+    function decidirAssinatura(i, decisao) {
+      const r = assinaturas[i];
+
+      if (!r || !r.elegivel) return;
+
+      const texto = decisao === 'VALIDAR'
+        ? 'VALIDAR a assinatura'
+        : 'SOLICITAR CORREÇÃO da assinatura';
+
+      const justificativa = prompt(
+        'Descreva a conferência humana realizada para ' +
+        texto + ' do ID ' + r.id + ':'
+      );
+
+      if (
+        !justificativa ||
+        justificativa.trim().length < 12
+      ) {
+        if (justificativa !== null) {
+          alert('Informe pelo menos 12 caracteres.');
+        }
+        return;
+      }
+
+      if (!confirm(
+        'Você abriu o PDF, conferiu a assinatura e ' +
+        'confirma a decisão: ' + texto + '?'
+      )) return;
+
+      const status =
+        document.getElementById('assinaturaStatus');
+
+      status.textContent = 'Registrando conferência…';
+
+      google.script.run
+        .withSuccessHandler(res => {
+          status.textContent =
+            'Conferência registrada: ' + res.situacao;
+
+          loadAssinaturas();
+
+          google.script.run
+            .withSuccessHandler(draw)
+            .getPortalData();
+        })
+        .withFailureHandler(e => {
+          status.textContent = 'Erro: ' + e.message;
+        })
+        .decidirAssinaturaSDC(
+          r.arquivoId,
+          decisao,
+          justificativa
+        );
+    }
+  </script>
+</body>
+</html>
