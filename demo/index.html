@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SDC | Painel de Gestão 2.2</title><style>
+:root{font-family:Inter,Arial,sans-serif;color:#18263d;background:#f5f7fc}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}
+.sidebar{position:fixed;inset:0 auto 0 0;width:235px;background:#fff;border-right:1px solid #e6eaf2;padding:24px 14px;z-index:10;display:flex;flex-direction:column}
+.brand{font-weight:800;color:#245dd9;font-size:21px;padding:0 12px 26px}.brand small{display:block;color:#8794a7;font-size:11px;font-weight:500;margin-top:5px}
+.nav{display:grid;gap:7px}.nav button{width:100%;text-align:left;background:transparent;color:#52627a;border-radius:10px;padding:13px 14px;font-weight:600}.nav button.active,.nav button:hover{background:#eaf1ff;color:#2259d3}
+.navfoot{margin-top:auto;color:#8290a4;font-size:12px;padding:12px}.mainarea{margin-left:235px;min-height:100vh}
+.topbar{height:77px;background:white;border-bottom:1px solid #e6eaf2;display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:15px}
+.topbar h1{font-size:20px;margin:0}.topbar p{margin:5px 0 0;color:#8290a4;font-size:12px}
+.userchip{background:#f3f6fc;border-radius:24px;padding:10px 14px;color:#586981;font-size:12px;white-space:nowrap}
+.wrap{max-width:1450px;margin:0 auto;padding:26px 30px 50px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card,.panel{background:white;border:1px solid #e8edf5;border-radius:16px;padding:22px;box-shadow:0 3px 12px #1b386009}.card{min-height:135px}.card strong{font-size:32px;display:block;margin-top:14px;color:#1a2b44}.card span,.muted{color:#73839b;font-size:13px}
+.panel{margin-top:20px}h2{font-size:18px;margin:0 0 16px}.barrow{display:flex;align-items:center;gap:12px;margin:13px 0}.barrow label{width:90px;color:#56647b}.bar{height:14px;background:#edf2ff;border-radius:10px;flex:1;overflow:hidden}.bar>div{height:100%;background:#477ff0;border-radius:10px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}select,input{padding:11px;border:1px solid #dbe3f0;border-radius:9px;min-width:190px;background:#fff;color:#263b59}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:13px;text-align:left;border-bottom:1px solid #e9eef5}th{background:#f7f9fd;color:#56667e;font-size:12px}td{overflow-wrap:anywhere}.tablewrap{overflow-x:auto}.pill{border-radius:20px;padding:5px 10px;background:#eef4ff;display:inline-block;color:#355ba1}.note{margin-top:14px;color:#7a899d;font-size:12px}
+button{border:0;border-radius:9px;padding:10px 14px;background:#2e68dc;color:white;cursor:pointer}button:hover{filter:brightness(.96)}button:disabled{opacity:.45;cursor:not-allowed}
+td button{margin:3px 3px 3px 0;font-size:12px;padding:9px 11px}
+#error{color:#ad2338}#loading{padding:40px;text-align:center}
+.view[hidden]{display:none!important}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.sectionhead p{margin:0;color:#7b8ba1;font-size:13px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.two .panel{margin-top:0}
+@media(max-width:1050px){.sidebar{width:190px}.mainarea{margin-left:190px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:20px}}
+@media(max-width:700px){.sidebar{position:static;width:100%;padding:10px}.brand{padding:6px}.nav{display:flex;overflow:auto}.nav button{width:auto;white-space:nowrap;padding:9px}.navfoot{display:none}.mainarea{margin-left:0}.topbar{padding:12px 18px;height:auto}.userchip{display:none}.cards,.two{grid-template-columns:1fr}.wrap{padding:14px}}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.card-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#edf3ff;color:#3169db;font-size:21px}.card-note{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;font-weight:600;color:#6c7c92}.card-note.good{color:#13825a}.card-note.attention{color:#b46a16}.card-note .arrow{font-size:16px}.card strong{margin-top:8px}.card .progress{height:5px;border-radius:6px;background:#eef2fa;margin-top:12px;overflow:hidden}.card .progress i{display:block;height:100%;background:#477ff0;border-radius:6px}
+
+.pilot-hero{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.pilot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.pilot-metric{padding:18px;border-radius:12px;background:#f5f8ff;border:1px solid #e4edfa}
+.pilot-metric strong{font-size:27px;display:block;margin:0 0 7px}.pilot-metric span{font-size:12px;color:#667994}
+.pilot-action{display:inline-block;background:#2869db;color:white;text-decoration:none;font-weight:700;border-radius:10px;padding:14px 19px;margin-top:10px}
+.pilot-action:hover{background:#2256bd}
+.pilot-warning{background:#fff8e7;border:1px solid #f3deb4;border-radius:11px;padding:14px;color:#855519;font-size:13px;margin-top:16px;line-height:1.55}
+@media(max-width:700px){.pilot-grid{grid-template-columns:1fr}.pilot-action{display:block;text-align:center}}
+
+/* SDC 2.0 — Formulários administrativos */
+.admin-form{display:grid;gap:14px;max-width:900px}
+.admin-form label{display:grid;gap:6px;color:#4c607b;font-size:13px;font-weight:650}
+.admin-form input,.admin-form textarea,.admin-form select{width:100%;max-width:100%;min-width:0;background:#fff;padding:12px;border:1px solid #d9e3f1;border-radius:9px;color:#203552}
+.admin-form textarea{min-height:85px;resize:vertical;line-height:1.45}
+.admin-form .inline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-subtitle{color:#71839c;font-size:13px;line-height:1.6}
+.admin-status{padding:12px 0;color:#355987;font-size:13px;white-space:pre-wrap}
+.admin-status.is-error{color:#af293b}
+.admin-link a{display:inline-block;font-size:13px;margin:10px 0;color:#225fd0;text-decoration:underline;overflow-wrap:anywhere}
+.admin-hist{margin-top:20px}
+.admin-hist td:last-child{min-width:90px}
+.admin-hist a{color:#215ed5}
+.admin-identity{background:#eef4ff;border-radius:10px;padding:12px;font-size:12px;color:#385c92;margin:15px 0}
+@media(max-width:700px){.admin-form .inline{grid-template-columns:1fr}}
+
+/* SDC 2.2 - Resumo documental: isolado para preservar os modulos da versao 2.0 */
+.sdc-version-chip{display:inline-block;background:#eaf2ff;color:#2459be;font-size:11px;font-weight:800;letter-spacing:.02em;border-radius:30px;padding:5px 9px;vertical-align:middle}
+.sdc-document-panel{margin:0 0 17px;padding:25px 26px}
+.sdc-document-title{font-size:19px;margin:0;color:#132b51}
+.sdc-document-subtitle{font-size:12px;color:#71829b;line-height:1.5;margin:6px 0 18px}
+.sdc-summary-grid{display:grid;grid-template-columns:minmax(210px, 265px) minmax(0, 1fr);gap:30px;align-items:center}
+.sdc-ring-container{position:relative;width:min(225px,100%);aspect-ratio:1;margin:auto}
+.sdc-ring-container svg{display:block;width:100%;height:100%}
+.sdc-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.sdc-ring-center strong{font-size:35px;color:#172c4a;line-height:1}
+.sdc-ring-center span{margin-top:7px;color:#71829b;font-size:12px}
+.sdc-ring-legend{display:grid;gap:15px}
+.sdc-legend-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:11px;border-bottom:1px solid #eff2f8;color:#405271;font-size:14px}
+.sdc-legend-row:last-child{border:0;padding-bottom:0}
+.sdc-legend-name{display:flex;align-items:center;gap:11px}
+.sdc-legend-swatch{width:13px;height:13px;border-radius:5px;flex-shrink:0}
+.sdc-legend-data{font-weight:750;color:#162b49;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sdc-legend-pct{color:#7e8ea5;font-size:12px;font-weight:500;margin-left:8px}
+.sdc-document-kpis-heading{margin:21px 0 12px;font-size:16px;color:#182f50}
+.sdc-document-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:23px}
+.sdc-document-card{background:white;border:1px solid #e8edf5;border-radius:16px;padding:17px 18px;box-shadow:0 3px 12px #1b386009;min-height:135px}
+.sdc-document-card .sdc-card-header{display:flex;align-items:center;justify-content:space-between;gap:9px;font-size:12px;font-weight:650;color:#5f718e}
+.sdc-document-card .sdc-card-badge{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;font-size:16px}
+.sdc-document-card .sdc-card-value{display:block;margin-top:13px;font-size:30px;font-weight:800;color:#172b49;line-height:1.05;font-variant-numeric:tabular-nums}
+.sdc-document-card .sdc-card-foot{margin-top:13px;font-size:12px;color:#74829a}
+.sdc-document-card.green .sdc-card-badge{background:#eaf8f0;color:#188454}
+.sdc-document-card.blue .sdc-card-badge{background:#eaf1ff;color:#2c67df}
+.sdc-document-card.yellow .sdc-card-badge{background:#fff7df;color:#ab800e}
+.sdc-document-card.red .sdc-card-badge{background:#fcedeb;color:#bb5e4e}
+.sdc-document-note{margin:14px 0 0;font-size:12px;color:#7a8aa0;line-height:1.5}
+@media(max-width:1130px){.sdc-document-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.sdc-summary-grid{grid-template-columns:1fr;gap:12px}.sdc-document-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.sdc-document-panel{padding:18px}.sdc-ring-container{max-width:210px}}
+@media(max-width:380px){.sdc-document-cards{grid-template-columns:1fr}}
+
+</style></head><body>
+<aside class="sidebar"><div class="brand">◈ SDC Portal<small>School Diplomacy Clubs · 2026–2027</small></div>
+<nav class="nav" aria-label="Navegação principal">
+<button class="active" data-target="dashboard" onclick="showView('dashboard')">▦ &nbsp; Dashboard</button>
+<button data-target="students" onclick="showView('students')">♙ &nbsp; Estudantes</button>
+<button data-target="documents" onclick="showView('documents')">▤ &nbsp; Triagem documental</button>
+<button data-target="signatures" onclick="showView('signatures')">✓ &nbsp; Assinaturas</button>
+<button data-target="cefr" onclick="showView('cefr')">🎓 &nbsp; Nivelamento CEFR</button>
+<button data-target="reports" onclick="showView('reports')">📊 &nbsp; Relatórios</button>
+<button data-target="plans" onclick="showView('plans')">🗓️ &nbsp; Planos de aula</button>
+</nav><div class="navfoot">Portfólio · Interface 2.2<br>Ambiente demonstrativo</div></aside>
+<div class="mainarea"><div class="topbar"><div><h1 id="pageTitle">Visão geral</h1><p>Painel administrativo · School Diplomacy Clubs · <strong>Versão 2.2</strong></p></div><div class="userchip">◉ Modo demonstração · <strong>SDC 2.2</strong></div></div>
+<main class="wrap"><aside id="demo-note" role="note" style="background:#142d51;color:white;padding:18px 22px;border-radius:12px;margin-bottom:22px;line-height:1.6"><strong>DEMONSTRAÇÃO · DADOS FICTÍCIOS</strong><br>Explore o painel e os filtros. Revisões, provas e geração de documentos estão desativadas. Nenhum dado é enviado.</aside><div id="loading">Carregando exemplos locais…</div><div id="error" role="alert"></div><div id="content" hidden>
+<div class="view" data-view="dashboard"><div class="sectionhead"><div><h2>Indicadores do programa</h2><p>Visão consolidada · setas indicam situação e proporção, não crescimento mensal</p></div></div>
+
+<!-- SDC 2.2: novo resumo documental integrado ao dashboard da versao 2.0 -->
+<section class="panel sdc-document-panel" aria-labelledby="sdcDocumentTitle">
+  <h2 class="sdc-document-title" id="sdcDocumentTitle">Status da triagem documental <span class="sdc-version-chip">NOVO · 2.2</span></h2>
+  <p class="sdc-document-subtitle">Situação dos estudantes com continuidade confirmada. Valores fictícios para demonstrar a interface.</p>
+  <div id="sdcRingPanel" aria-live="polite">
+    <p class="muted">Carregando gráfico circular…</p>
+  </div>
+  <p class="sdc-document-note">O recebimento de um termo não equivale à validação da assinatura. A conferência permanece manual.</p>
+</section>
+<h2 class="sdc-document-kpis-heading">Indicadores da documentação <span class="sdc-version-chip">2.2</span></h2>
+<section class="sdc-document-cards" id="sdcDocumentCards" aria-label="Quatro indicadores documentais">
+  <p class="muted">Carregando os novos indicadores…</p>
+</section>
+
+<section class="cards" id="cards"></section><div class="two" style="margin-top:20px">
+<section class="panel"><h2>Distribuição por nível CEFR</h2><div id="cefr"></div></section>
+<section class="panel"><h2>Acompanhamento documental</h2><div id="docs"></div><p class="note">Recebimento não equivale a assinatura validada. Documentos precisam de conferência.</p></section></div></div>
+<div class="view" data-view="students" hidden><section class="panel" style="margin-top:0"><h2>Consulta de estudantes confirmados</h2><div class="filters"><select id="school"><option value="">Todas as escolas</option></select><select id="level"><option value="">Todos os níveis CEFR</option></select><input id="search" placeholder="Buscar pelo ID do estudante"><button onclick="clearFilters()">Limpar filtros</button></div><p class="muted" id="count"></p><div class="tablewrap"><table><thead><tr><th>ID</th><th>Escola</th><th>CEFR</th><th>Situação documental</th><th>Assinatura</th></tr></thead><tbody id="rows"></tbody></table></div><p class="note">Esta versão não exibe nomes, contatos ou documentos pessoais na consulta geral. Restrinja a publicação à equipe autorizada.</p></section></div>
+<div class="view" data-view="documents" hidden><section class="panel" id="triagemPanel" style="margin-top:0"><h2>Revisão documental — equipe autorizada</h2><p class="note">Aprovar vínculo NÃO valida assinatura. Abra o PDF e confira identidade e escola antes de aprovar.</p><button onclick="loadTriagem()">Atualizar triagem</button><p id="triagemStatus" class="muted" role="status"></p><div class="tablewrap"><table><thead><tr><th>Arquivo</th><th>Escola</th><th>ID sugerido</th><th>Resultado</th><th>Revisão</th><th>Ação</th></tr></thead><tbody id="triagemRows"></tbody></table></div></section></div>
+<div class="view" data-view="signatures" hidden><section class="panel" id="assinaturaPanel" style="margin-top:0"><h2>Conferência de assinaturas — equipe autorizada</h2><p class="note">Somente vínculos aprovados. A validação exige abrir o PDF e conferir manualmente a assinatura. Cada decisão é registrada na auditoria.</p><button onclick="loadAssinaturas()">Atualizar assinaturas</button><p id="assinaturaStatus" class="muted" role="status"></p><div class="tablewrap"><table><thead><tr><th>Documento</th><th>ID</th><th>Estudante</th><th>Situação</th><th>Assinatura</th><th>Ação</th></tr></thead><tbody id="assinaturaRows"></tbody></table></div></section></div>
+<div class="view" data-view="cefr" hidden>
+  <section class="panel" style="margin-top:0">
+    <div class="pilot-hero"><div><h2>🎓 Nivelamento CEFR — piloto B1</h2>
+      <p class="muted">Avaliação técnica restrita à equipe autorizada · Reading e Use of English</p></div>
+      <span class="pill">Demonstração</span>
+    </div>
+    <div class="pilot-grid">
+      <div class="pilot-metric"><strong>B1</strong><span>Nível de referência do piloto</span></div>
+      <div class="pilot-metric"><strong>5</strong><span>Itens revisados usados na prova</span></div>
+      <div class="pilot-metric"><strong>2</strong><span>Habilidades avaliadas</span></div>
+    </div>
+    <p>A interface recuperada apresenta este piloto. O código da avaliação não está incluído nesta demonstração.</p>
+    <a class="pilot-action" href="#demo-note" target="_blank" rel="noopener noreferrer">Avaliação indisponível nesta demonstração</a>
+    <div class="pilot-warning"><strong>Uso interno:</strong> este piloto usa uma identidade fictícia, aceita uma única tentativa já registrada e <strong>não</strong> constitui certificação CEFR. Se o envio já ocorreu, a interface poderá bloquear uma nova tentativa. Não compartilhe o link com estudantes reais.</div>
+    <p class="note">Os módulos de autenticação individual, provas reais, múltiplas tentativas e relatório de proficiência permanecem em desenvolvimento.</p>
+  </section>
+</div>
+
+<!-- SDC 2.0: Relatórios — snapshot da base, não série histórica -->
+<div class="view" data-view="reports" hidden>
+  <section class="panel" style="margin-top:0">
+    <h2>📊 Relatórios mensais</h2>
+    <p class="admin-subtitle">Gerar relatório da situação atual da base, com atividades, dificuldades e encaminhamentos registrados pela coordenação. Não reconstrói números de meses anteriores.</p>
+    <div class="admin-identity" id="adminIdentityReports">Verificando autorização...</div>
+    <p class="admin-subtitle">Competência atual: <strong id="adminCompetencia">—</strong></p>
+    <form id="adminRelForm" class="admin-form">
+      <label>Atividades realizadas
+        <textarea name="atividades" maxlength="3000" placeholder="Ex.: reuniões, encontros internacionais, acompanhamento pedagógico"></textarea>
+      </label>
+      <label>Dificuldades encontradas
+        <textarea name="dificuldades" maxlength="3000" placeholder="Ex.: ajustes de agenda, documentos pendentes"></textarea>
+      </label>
+      <label>Encaminhamentos e responsáveis
+        <textarea name="encaminhamentos" maxlength="3000" placeholder="Ex.: ações, responsáveis e prazos"></textarea>
+      </label>
+      <div><button id="adminRelBtn" type="submit">Gerar relatório no Google Docs</button></div>
+    </form>
+    <p id="adminRelStatus" class="admin-status" role="status"></p>
+    <div class="admin-link" id="adminRelLink"></div>
+  </section>
+  <section class="panel admin-hist"><h2>Histórico de relatórios</h2>
+    <div class="tablewrap"><table><thead><tr><th>Extração</th><th>Relatório</th><th>Acesso</th></tr></thead><tbody id="adminRelHist"></tbody></table></div>
+  </section>
+</div>
+
+<!-- SDC 2.0: Planos editáveis via formulário -->
+<div class="view" data-view="plans" hidden>
+  <section class="panel" style="margin-top:0">
+    <h2>🗓️ Planos de aula</h2>
+    <p class="admin-subtitle">Informe os parâmetros pedagógicos para gerar um plano estruturado em Google Docs. Os objetivos propostos devem ser revisados pelo professor antes da aplicação.</p>
+    <div class="admin-identity" id="adminIdentityPlans">Verificando autorização...</div>
+    <form id="adminPlanForm" class="admin-form">
+      <label>Tema da aula <input name="tema" required maxlength="120" value="Cultural Identity and Diplomacy"></label>
+      <div class="inline">
+        <label>Nível CEFR de referência
+          <select name="nivel" required><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>C1</option><option>C2</option></select>
+        </label>
+        <label>Duração (minutos) <input name="duracao" type="number" min="30" max="180" step="1" value="60" required></label>
+      </div>
+      <label>Objetivo de aprendizagem
+        <textarea name="objetivo" maxlength="1500" required>Expressar opiniões e comparar práticas culturais em interações colaborativas.</textarea>
+      </label>
+      <div class="inline">
+        <label>Professor / responsável <input name="professor" maxlength="120" value="Equipe SDC" required></label>
+        <label>Público <input name="publico" maxlength="150" value="Estudantes de 14 a 18 anos" required></label>
+      </div>
+      <div><button id="adminPlanBtn" type="submit">Gerar plano no Google Docs</button></div>
+    </form>
+    <p id="adminPlanStatus" class="admin-status" role="status"></p>
+    <div class="admin-link" id="adminPlanLink"></div>
+  </section>
+  <section class="panel admin-hist"><h2>Histórico de planos</h2>
+    <div class="tablewrap"><table><thead><tr><th>Data</th><th>Plano</th><th>Acesso</th></tr></thead><tbody id="adminPlanHist"></tbody></table></div>
+  </section>
+</div>
+</div></main></div>
+<script>/* Local, synthetic data. No network, persistence, or production credentials. */
+(function () {
+  const schools = ['Escola Horizonte (demo)', 'Escola Aurora (demo)', 'Escola Farol (demo)'];
+  const statuses = ['Validado', 'Recebido — aguardando conferência', 'Pendente', 'Correção necessária'];
+  const students = Array.from({ length: 24 }, (_, i) => ({
+    id: 'DEMO-' + String(i + 1).padStart(3, '0'), escola: schools[i % 3],
+    cefr: ['A1', 'A2', 'B1', 'B2'][i % 4], situacao: statuses[i % 4],
+    conferencia: ['Assinatura válida', 'Não conferida', 'Não recebida', 'Revisar assinatura'][i % 4]
+  }));
+  const data = {
+    kpis: { escolas: 3, estudantes: 24, confirmados: 24, validados: 6, recebidos: 6, pendentes: 6, correcao: 6 },
+    cefr: { A1: 6, A2: 6, B1: 6, B2: 6 }, escolas: schools, students
+  };
+  const fixtures = {
+    getPortalData: data,
+    getTriagemPortalSDC: [{ arquivoId: 'DEMO-FILE', arquivo: 'Exemplo ilustrativo — sem PDF', url: '#demo-note', pasta: schools[0], idSugerido: 'DEMO-001', estudante: 'Participante fictício 001', resultado: 'Vínculo ilustrativo já revisado', revisao: 'APROVADO', observacao: 'Demonstração' }],
+    listarAssinaturasSDC: [{ arquivoId: 'DEMO-FILE', arquivo: 'Exemplo ilustrativo — sem PDF', url: '#demo-note', id: 'DEMO-001', estudante: 'Participante fictício 001', situacao: 'Validado', assinatura: 'Assinatura válida (simulação)', elegivel: false }]
+  };
+  function runner(success, failure) {
+    return new Proxy({}, { get(_, method) {
+      if (method === 'withSuccessHandler') return fn => runner(fn, failure);
+      if (method === 'withFailureHandler') return fn => runner(success, fn);
+      return () => queueMicrotask(() => {
+        if (Object.hasOwn(fixtures, method)) { if (success) success(structuredClone(fixtures[method])); }
+        else if (failure) failure({ message: 'Demonstração local: esta operação exige o servidor institucional e está desativada.' });
+      });
+    }});
+  }
+  window.google = { script: { get run() { return runner(); } } };
+})();
+</script><script>
+
+/* SDC 2.2 - Indicadores exclusivos. Preserva draw, relatorios e planos originais. */
+function sdcSafeNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+}
+function sdcRenderDocumentSummary(k) {
+  const values = [
+    { name:'Validados', count:sdcSafeNumber(k.validados), color:'#30ad7b', className:'green', symbol:'✓', caption:'Assinaturas conferidas' },
+    { name:'Em análise', count:sdcSafeNumber(k.recebidos), color:'#3c75eb', className:'blue', symbol:'◷', caption:'Termos recebidos, aguardando análise' },
+    { name:'Pendentes', count:sdcSafeNumber(k.pendentes), color:'#edc14e', className:'yellow', symbol:'▤', caption:'Termos ainda não recebidos' },
+    { name:'Correção necessária', count:sdcSafeNumber(k.correcao), color:'#df7569', className:'red', symbol:'!', caption:'Documentos que exigem providências' }
+  ];
+  const ringTarget = document.getElementById('sdcRingPanel');
+  const cardsTarget = document.getElementById('sdcDocumentCards');
+  if (!ringTarget || !cardsTarget) return;
+  const sum = values.reduce((a, x) => a + x.count, 0);
+  const confirmed = sdcSafeNumber(k.confirmados);
+  const total = sum || confirmed;
+  const circumference = 2 * Math.PI * 73;
+  let cumulative = 0;
+  const arcs = [];
+  for (const x of values) {
+    if (!total || !x.count) continue;
+    const length = x.count / total * circumference;
+    arcs.push('<circle cx="110" cy="110" r="73" fill="none" stroke="' + x.color + '" stroke-width="32" ' +
+      'stroke-dasharray="' + length.toFixed(3) + ' ' + (circumference-length).toFixed(3) + '" ' +
+      'stroke-dashoffset="' + (-cumulative).toFixed(3) + '" transform="rotate(-90 110 110)"/>');
+    cumulative += length;
+  }
+  ringTarget.innerHTML = '<div class="sdc-summary-grid">' +
+    '<div class="sdc-ring-container" role="img" aria-label="' + total + ' estudantes: ' + values.map(x=>x.name+' '+x.count).join(', ') + '">' +
+      '<svg viewBox="0 0 220 220" aria-hidden="true" focusable="false">' +
+        '<circle cx="110" cy="110" r="73" fill="none" stroke="#e9edf5" stroke-width="32"/>' + arcs.join('') +
+      '</svg><div class="sdc-ring-center"><strong>' + total + '</strong><span>estudantes</span></div></div>' +
+    '<div class="sdc-ring-legend">' + values.map(x => '<div class="sdc-legend-row"><span class="sdc-legend-name"><span class="sdc-legend-swatch" style="background:' + x.color + '"></span>' + x.name + '</span><span class="sdc-legend-data">' + x.count + '<span class="sdc-legend-pct">' + (total ? (100*x.count/total).toFixed(1).replace('.', ',') : '0') + '%</span></span></div>').join('') + '</div>' +
+    '</div>';
+  cardsTarget.innerHTML = values.map(x => '<div class="sdc-document-card ' + x.className + '">' +
+    '<div class="sdc-card-header"><span>' + x.name + '</span><span class="sdc-card-badge" aria-hidden="true">' + x.symbol + '</span></div>' +
+    '<strong class="sdc-card-value">' + x.count + '</strong><div class="sdc-card-foot">' + x.caption + '</div></div>').join('');
+  if (confirmed && total !== confirmed) {
+    const note = document.createElement('p');
+    note.className = 'sdc-document-note';
+    note.textContent = 'Atenção: ' + total + ' status documentais frente a ' + confirmed + ' continuidades confirmadas. Confira o cálculo dos indicadores em getPortalData().';
+    ringTarget.appendChild(note);
+  }
+}
+
+
+function showView(name){
+ document.querySelectorAll('.view').forEach(el=>el.hidden=el.dataset.view!==name);
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===name));
+ const titles={dashboard:'Visão geral',students:'Estudantes',documents:'Gestão documental',signatures:'Conferência de assinaturas',cefr:'Nivelamento CEFR',reports:'Relatórios mensais',plans:'Planos de aula'};
+ document.getElementById('pageTitle').textContent=titles[name]||'Portal SDC';
+ if(name==='documents')loadTriagem();
+ if(name==='signatures')loadAssinaturas();
+ if(name==='reports'||name==='plans')loadAdministrativo();
+}
+
+let portal;
+function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function draw(d){portal=d;document.getElementById('loading').hidden=true;document.getElementById('content').hidden=false;const k=d.kpis;sdcRenderDocumentSummary(k);const pct=(a,b)=>b?Math.round(a/b*1000)/10:0;const metrics=[
+['Escolas',k.escolas,'⌂','Base institucional cadastrada','neutral',null],
+['Estudantes na base',k.estudantes,'♙','Total de registros na base','neutral',null],
+['Continuidade confirmada',k.confirmados,'✓',pct(k.confirmados,k.estudantes)+'% dos estudantes cadastrados','good',pct(k.confirmados,k.estudantes)],
+['Termos recebidos',k.recebidos,'▤','Aguardando conferência de assinatura','neutral',pct(k.recebidos,k.confirmados)],
+['Termos validados',k.validados,'◈',pct(k.validados,k.confirmados)+'% dos estudantes confirmados','good',pct(k.validados,k.confirmados)],
+['Termos pendentes',k.pendentes,'◷','Ainda não recebidos — requer atenção','attention',pct(k.pendentes,k.confirmados)]
+];document.getElementById('cards').innerHTML=metrics.map(([t,v,ico,note,tone,progress])=>`<div class="card"><div class="card-top"><span>${safe(t)}</span><div class="card-icon" aria-hidden="true">${ico}</div></div><strong>${safe(v)}</strong><div class="card-note ${tone}"><span class="arrow" aria-hidden="true">${tone==='good'?'↗':tone==='attention'?'→':'•'}</span>${safe(note)}</div>${progress===null?'':`<div class="progress" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"><i style="width:${Math.min(100,Math.max(0,progress))}%"></i></div>`}</div>`).join('');let max=Math.max(1,...Object.values(d.cefr));document.getElementById('cefr').innerHTML=Object.entries(d.cefr).sort(([a],[b])=>a.localeCompare(b)).map(([l,v])=>`<div class="barrow"><label>${safe(l)}</label><div class="bar"><div style="width:${100*v/max}%"></div></div><b>${v}</b></div>`).join('');document.getElementById('docs').textContent=`${k.recebidos} aguardando conferência · ${k.validados} validados · ${k.correcao} exigem correção · ${k.pendentes} não recebidos`;document.getElementById('school').innerHTML='<option value="">Todas as escolas</option>'+d.escolas.map(x=>`<option value="${safe(x)}">${safe(x)}</option>`).join('');document.getElementById('level').innerHTML='<option value="">Todos os níveis CEFR</option>'+Object.keys(d.cefr).sort().map(x=>`<option value="${safe(x)}">${safe(x)}</option>`).join('');renderRows()}
+function renderRows(){if(!portal)return;const school=document.getElementById('school').value,level=document.getElementById('level').value,q=document.getElementById('search').value.trim().toLowerCase();const a=portal.students.filter(s=>(!school||s.escola===school)&&(!level||(s.cefr||'Não informado')===level)&&(!q||s.id.toLowerCase().includes(q)));document.getElementById('count').textContent=`${a.length} estudante(s) encontrado(s)`;document.getElementById('rows').innerHTML=a.slice(0,200).map(s=>`<tr><td>${safe(s.id)}</td><td>${safe(s.escola)}</td><td>${safe(s.cefr)}</td><td><span class="pill">${safe(s.situacao)}</span></td><td>${safe(s.conferencia)}</td></tr>`).join('')}
+function clearFilters(){for(const x of ['school','level','search'])document.getElementById(x).value='';renderRows()}
+for(const x of ['school','level','search'])document.getElementById(x).addEventListener(x==='search'?'input':'change',renderRows);
+google.script.run.withSuccessHandler(draw).withFailureHandler(e=>{document.getElementById('loading').hidden=true;document.getElementById('error').textContent='Erro ao carregar: '+e.message}).getPortalData();
+
+let triagem=[];
+function loadTriagem(){document.getElementById('triagemStatus').textContent='Carregando triagem…';google.script.run.withSuccessHandler(rows=>{triagem=rows;document.getElementById('triagemStatus').textContent=rows.length+' arquivo(s) na triagem';document.getElementById('triagemRows').innerHTML=rows.map((r,i)=>`<tr><td><a href="${safe(r.url)}" target="_blank" rel="noopener noreferrer">${safe(r.arquivo)}</a></td><td>${safe(r.pasta)}</td><td>${safe(r.idSugerido)} ${safe(r.estudante)}</td><td>${safe(r.resultado)}</td><td>${safe(r.revisao)}</td><td>${r.revisao==='PENDENTE'?`<button onclick="decidir(${i},'APROVAR')" ${r.resultado==='SUGESTÃO ÚNICA — conferir documento'?'':'disabled'}>Aprovar vínculo</button> <button onclick="decidir(${i},'REJEITAR')">Rejeitar</button>`:'—'}</td></tr>`).join('')}).withFailureHandler(e=>document.getElementById('triagemStatus').textContent='Sem acesso à triagem: '+e.message).getTriagemPortalSDC()}
+function decidir(i,decisao){const r=triagem[i];const motivo=prompt('Justificativa obrigatória para '+decisao.toLowerCase()+' o vínculo do arquivo '+r.arquivo+':');if(!motivo||!motivo.trim())return;if(!confirm((decisao==='APROVAR'?'Você conferiu o PDF e confirma que pertence ao estudante ID '+r.idSugerido+'? A assinatura continuará NÃO CONFERIDA.':'Confirmar rejeição do vínculo sugerido?')))return;document.getElementById('triagemStatus').textContent='Registrando decisão…';google.script.run.withSuccessHandler(res=>{document.getElementById('triagemStatus').textContent='Decisão registrada: '+res.estado;loadTriagem();google.script.run.withSuccessHandler(draw).getPortalData()}).withFailureHandler(e=>document.getElementById('triagemStatus').textContent='Erro: '+e.message).decidirTriagemPortalSDC(r.arquivoId,decisao,motivo)}
+
+let assinaturas=[];
+function loadAssinaturas(){
+  const status=document.getElementById('assinaturaStatus');status.textContent='Carregando conferências…';
+  google.script.run.withSuccessHandler(rows=>{
+    assinaturas=rows;status.textContent=rows.length+' vínculo(s) aprovado(s) encontrado(s)';
+    document.getElementById('assinaturaRows').innerHTML=rows.map((r,i)=>`<tr><td><a href="${safe(r.url)}" target="_blank" rel="noopener noreferrer">${safe(r.arquivo)}</a></td><td>${safe(r.id)}</td><td>${safe(r.estudante)}</td><td>${safe(r.situacao)}</td><td>${safe(r.assinatura)}</td><td>${r.elegivel?`<button onclick="decidirAssinatura(${i},'VALIDAR')">Validar assinatura</button> <button onclick="decidirAssinatura(${i},'CORRECAO')">Solicitar correção</button>`:'—'}</td></tr>`).join('');
+  }).withFailureHandler(e=>status.textContent='Erro: '+e.message).listarAssinaturasSDC();
+}
+function decidirAssinatura(i,decisao){
+  const r=assinaturas[i];if(!r||!r.elegivel)return;
+  const texto=decisao==='VALIDAR'?'VALIDAR a assinatura':'SOLICITAR CORREÇÃO da assinatura';
+  const justificativa=prompt('Descreva a conferência humana realizada para '+texto+' do ID '+r.id+':');
+  if(!justificativa||justificativa.trim().length<12){if(justificativa!==null)alert('Informe pelo menos 12 caracteres.');return;}
+  if(!confirm('Você abriu o PDF, conferiu a assinatura e confirma a decisão: '+texto+'?'))return;
+  const status=document.getElementById('assinaturaStatus');status.textContent='Registrando conferência…';
+  google.script.run.withSuccessHandler(res=>{status.textContent='Conferência registrada: '+res.situacao;loadAssinaturas();google.script.run.withSuccessHandler(draw).getPortalData();}).withFailureHandler(e=>status.textContent='Erro: '+e.message).decidirAssinaturaSDC(r.arquivoId,decisao,justificativa);
+}
+
+// SDC 2.0 — clientes de administração; autorização sempre revalidada no servidor.
+function adminStatus(id, message, error) {
+  const el = document.getElementById(id);
+  el.textContent = message || '';
+  el.classList.toggle('is-error', Boolean(error));
+}
+function adminHistorico(tbodyId, lista) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.replaceChildren();
+  if(!lista.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 3;
+    td.textContent = 'Nenhum documento gerado ainda.';
+    tr.appendChild(td);tbody.appendChild(tr);
+    return;
+  }
+  lista.forEach(item => {
+    const tr = document.createElement('tr');
+    const tdData = document.createElement('td');tdData.textContent = item.data;
+    const tdTitulo = document.createElement('td');tdTitulo.textContent = item.titulo;
+    const tdAcao = document.createElement('td');
+    if(/^https:\/\/docs\.google\.com\//.test(item.link)) {
+      const a = document.createElement('a');
+      a.href = item.link;a.target = '_blank';a.rel = 'noopener noreferrer';
+      a.textContent = 'Abrir documento';tdAcao.appendChild(a);
+    } else {tdAcao.textContent = 'Link indisponível';}
+    tr.append(tdData,tdTitulo,tdAcao);tbody.appendChild(tr);
+  });
+}
+function loadAdministrativo() {
+  google.script.run
+    .withSuccessHandler(d => {
+      document.getElementById('adminCompetencia').textContent = d.competencia;
+      document.getElementById('adminIdentityReports').textContent =
+        'Conta autorizada: ' + d.email;
+      document.getElementById('adminIdentityPlans').textContent =
+        'Conta autorizada: ' + d.email;
+      adminHistorico('adminRelHist', d.relatorios || []);
+      adminHistorico('adminPlanHist', d.planos || []);
+      document.getElementById('adminRelBtn').disabled = false;
+      document.getElementById('adminPlanBtn').disabled = false;
+    })
+    .withFailureHandler(e => {
+      const aviso = 'Acesso restrito: ' + e.message;
+      document.getElementById('adminIdentityReports').textContent = aviso;
+      document.getElementById('adminIdentityPlans').textContent = aviso;
+      document.getElementById('adminRelBtn').disabled = true;
+      document.getElementById('adminPlanBtn').disabled = true;
+    })
+    .obterAdministrativoSDC();
+}
+function adminLink(containerId,url,title) {
+  const el = document.getElementById(containerId);el.replaceChildren();
+  if(!/^https:\/\/docs\.google\.com\//.test(url)) return;
+  const a = document.createElement('a');
+  a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=title;
+  el.appendChild(a);
+}
+function adminEnviar(formId,buttonId,statusId,linkId,method) {
+  document.getElementById(formId).addEventListener('submit',e=>{
+    e.preventDefault();
+    if (!confirm('Criar um novo Google Docs? Cada execução registra outro documento no histórico.')) return;
+    const formulario=e.currentTarget;
+    const dados=Object.fromEntries(new FormData(formulario).entries());
+    const btn=document.getElementById(buttonId);
+    btn.disabled=true;
+    adminStatus(statusId,'Gerando documento...');
+    document.getElementById(linkId).replaceChildren();
+    const runner=google.script.run
+      .withSuccessHandler(r=>{
+        btn.disabled=false;
+        adminStatus(statusId,'Documento criado e registrado no histórico.');
+        adminLink(linkId,r.url,'Abrir documento no Google Docs');
+        loadAdministrativo();
+      })
+      .withFailureHandler(e=>{
+        btn.disabled=false;
+        adminStatus(statusId,'Erro: '+e.message,true);
+      });
+    if(method==='relatorio') runner.gerarRelatorioGestaoSDC(dados);
+    else runner.gerarPlanoGestaoSDC(dados);
+  });
+}
+adminEnviar('adminRelForm','adminRelBtn','adminRelStatus','adminRelLink','relatorio');
+adminEnviar('adminPlanForm','adminPlanBtn','adminPlanStatus','adminPlanLink','plano');
+document.getElementById('adminRelBtn').disabled=true;
+document.getElementById('adminPlanBtn').disabled=true;
+
+</script></body></html>

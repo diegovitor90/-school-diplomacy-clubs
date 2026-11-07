@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.clasp.json
+.clasprc.json
+private/
+exports/
+*.pdf
+*.xlsx
+.DS_Store

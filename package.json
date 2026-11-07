@@ -1,0 +1,11 @@
+{
+  "name": "school-diplomacy-clubs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SDC Portal \u2014 recovered frontend and isolated portfolio demonstration",
+  "scripts": {
+    "build:demo": "node scripts/build-demo.mjs",
+    "test": "node --test",
+    "check": "node scripts/check.mjs"
+  }
+}

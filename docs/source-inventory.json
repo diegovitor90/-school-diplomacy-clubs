@@ -1,0 +1,10 @@
+{
+  "source": "Texto colado(20261106-135255).txt",
+  "original_sha256": "1f9a2f1595ada9b08569012498d1a57a054855da2e2d2319089a3c200e197030",
+  "recovered": "HTML frontend 2.2",
+  "changes": [
+    "CRLF normalized to LF",
+    "institutional pilot deployment URL replaced with template variable SDC_PILOT_URL"
+  ],
+  "backend_status": "not imported; snippets in conversation are not a complete export"
+}
